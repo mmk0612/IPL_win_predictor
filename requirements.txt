@@ -3,3 +3,6 @@ pandas==2.1.0
 numpy==1.26.4
 scikit-learn==1.0.2
 cython==3.0.10
+seaborn
+flask
+gunicorn==20.1.0
