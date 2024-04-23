@@ -1,9 +1,6 @@
 import streamlit as st 
 import pickle
 import pandas as pd
-
-pipe = pickle.load(open('pipe.pkl','rb'))
-
 teams = ['Rajasthan Royals', 'Delhi Capitals',
        'Royal Challengers Bangalore', 'Gujarat Titans',
        'Chennai Super Kings', 'Sunrisers Hyderabad', 'Punjab Kings',
@@ -33,6 +30,7 @@ venues =['Rajiv Gandhi International Stadium, Uppal, Hyderabad',
        'Holkar Cricket Stadium'
     ]
 
+pipe = pickle.load(open('pipe.pkl','rb'))
 
 st.title('IPL Second Innings Win Predictor')
 
@@ -64,24 +62,22 @@ if st.button('Predict Probability'):
     curr_over = int(overs)
     curr_ball = (overs%1)*10
     ball_left = 120 - ( curr_over*6 + curr_ball )
-    ball_left = int(ball_left)
     wickets_left = 10 - wickets
-    crr = runs*6/((curr_over*6) + curr_ball)
-    rrr = runs_left*6/ball_left
+    crr = runs/((curr_over*6) + curr_ball)
+    rrr = runs_left/ball_left
 
-    input_df = pd.DataFrame({'Batting team':[batting_team],
-                              'Bowling team':[bowling_team],
-                              'Venue':[selected_venue],
-                              'runs_needed':[runs_left],
-                              'balls_left':[ball_left],
-                              'wickets_left':[wickets_left],
-                              'total_runs_x':[target],
-                              'crr':[crr],
-                              'rrr':[rrr]})
+    input_df = pd.DataFrame({
+        'Batting team':[batting_team],
+        'Bowling team':[bowling_team],
+        'Venue':[selected_venue],
+        'runs_needed':[runs_left],
+        'balls_left':[ball_left],
+        'wickets_left':[wickets_left],
+        'crr':[crr],
+        'rrr':[rrr]
+    })
 
-    st.table(input_df)
-
-    print(input_df.dtypes)
+    # st.table(input_df)
     result = pipe.predict_proba(input_df)
     loss = result[0][0]
     win = result[0][1]
