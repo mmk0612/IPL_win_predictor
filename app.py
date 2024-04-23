@@ -79,7 +79,6 @@ if st.button('Predict Probability'):
                               'crr':[crr],
                               'rrr':[rrr]})
 
-    st.table(input_df)
 
     print(input_df.dtypes)
     result = pipe.predict_proba(input_df)
